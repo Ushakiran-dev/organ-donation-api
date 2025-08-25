@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Receptor Info</title>
+    <style>
+        body {
+          font-family: sans-serif;
+          background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+          color: #1b3c1b;
+          text-align: center;
+          padding: 40px 20px;
+        }
+
+        h1 {
+          color: #2e7d32;
+          margin-bottom: 20px;
+        }
+
+        input, button {
+          margin: 8px;
+          padding: 10px;
+          font-size: 1em;
+        }
+
+        button {
+          background: #66bb6a;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background: #388e3c;
+        }
+
+        table {
+          width: 100%;
+          margin-top: 30px;
+          border-collapse: collapse;
+          background: #ffffffee;
+        }
+
+        th, td {
+          border: 1px solid #ddd;
+          padding: 12px;
+        }
+
+        th {
+          background: #2e7d32;
+          color: white;
+        }
+
+        tr:nth-child(even) {
+          background: #f1f8e9;
+        }
+
+        tr:hover {
+          background: #dcedc8;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Receptor Information</h1>
+
+<div>
+    <input id="name" placeholder="Name" />
+    <input id="age" type="number" placeholder="Age" />
+    <input id="phone" placeholder="Phone Number" />
+    <input id="organRequired" placeholder="Organ Required" />
+    <input id="lifeSpan" type="number" placeholder="Patient Lifespan" />
+    <button onclick="addReceptor()">Add</button>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th><th>Name</th><th>Age</th><th>Phone</th><th>Organ</th><th>Lifespan</th>
+    </tr>
+    </thead>
+    <tbody id="receptorTable"></tbody>
+</table>
+
+<script>
+    async function loadReceptors() {
+      try {
+        const res = await fetch("http://localhost:8080/receptor");
+        const data = await res.json();
+        const table = document.getElementById("receptorTable");
+        table.innerHTML = "";
+
+        data.forEach(r => {
+          table.innerHTML += `
+            <tr>
+              <td>${r.id}</td><td>${r.name}</td><td>${r.age}</td>
+              <td>${r.phoneNumber}</td><td>${r.organRequired}</td><td>${r.patientLifeSpan}</td>
+            </tr>`;
+        });
+      } catch (err) {
+        console.error("Failed to load data", err);
+      }
+    }
+
+    async function addReceptor() {
+      const receptor = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value,
+        phoneNumber: document.getElementById("phone").value,
+        organRequired: document.getElementById("organRequired").value,
+        patientLifeSpan: document.getElementById("lifeSpan").value
+      };
+
+      try {
+        await fetch("http://localhost:8080/receptor", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(receptor)
+        });
+
+        document.querySelectorAll("input").forEach(input => input.value = "");
+        loadReceptors();
+      } catch (err) {
+        console.error("Failed to add receptor", err);
+      }
+    }
+
+    loadReceptors();
+</script>
+
+</body>
+</html>

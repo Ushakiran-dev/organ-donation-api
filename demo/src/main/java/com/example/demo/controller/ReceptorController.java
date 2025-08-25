@@ -24,30 +24,10 @@ public class ReceptorController {
 
     }
 
-    @GetMapping("/receptor/{id}")
-    public Receptor getDetailsbyId(@PathVariable int id)
-    {
-        return details.getDetailsbyId(id);
-    }
-
-
-
     @PostMapping("/receptor")
     public void addDetails(@RequestBody Receptor newdetails)
     {
-            details.addDetails(newdetails);
-    }
-    @PutMapping("/receptor")
-    public void updateDetails(@RequestBody Receptor updatedetails)
-    {
-        details.updateDetails(updatedetails);
-    }
-
-
-    @DeleteMapping("/receptor/{id}")
-    public void deleteDetails(@PathVariable int id)
-    {
-     details.deleteDetails(id);
+        details.addDetails(newdetails);
     }
 
 }

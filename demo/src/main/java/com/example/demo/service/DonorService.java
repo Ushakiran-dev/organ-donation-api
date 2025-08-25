@@ -14,30 +14,13 @@ public class DonorService {
 
     public List<Donor> getAllDetails()
     {
+
         return repo.findAll();
-    }
-    public Donor getDetailsById(int id)
-    {
-        return repo.findById(id).orElse(new Donor());
-      
     }
 
     public void addDetails(Donor donor) {
+
         repo.save(donor);
     }
 
-    public void updateDetails(Donor donor)
-    {
-        repo.save(donor);
-    }
-
-    public void deleteDetails(Donor donor)
-    {
-        repo.delete(donor);
-    }
-
-
-    public void deleteDetailsbyId(int id) {
-        repo.deleteById(id);
-    }
 }
